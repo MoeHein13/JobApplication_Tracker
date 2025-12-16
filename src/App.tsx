@@ -1,10 +1,11 @@
-import "./App.css";
 import Navigation from "./components/Navigation";
 
-function App() {
-  <>
-    <Navigation />
-  </>;
-}
+const App = () => {
+  return (
+    <>
+      <Navigation />
+    </>
+  );
+};
 
 export default App;
