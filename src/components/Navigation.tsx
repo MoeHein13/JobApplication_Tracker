@@ -9,8 +9,8 @@ const Navigation = () => {
       </div>
       <div className="flex justify-between items-center gap-3 ">
         <button className="bg-blue-400 text-white font-semibold rounded-xl px-5 py-2 text-2xl cursor-pointer hover:-translate-y-1 transform duration-300 hover:shadow-2xl flex items-center gap-1">
-          <Plus size={20} className="mt-1" />
-          <div>Add Application</div>
+          <Plus size={20} strokeWidth={5} className="mt-1" />
+          Add Application
         </button>
         <button className=" border border-blue-400 rounded-xl px-5 py-2 text-2xl font-semibold cursor-pointer hover:bg-blue-400 hover:text-white hover:transform duration-300  hover:-translate-y-1 hover:shadow-2xl">
           Export to Excel
