@@ -1,6 +1,14 @@
+import { useSetAtom } from "jotai";
 import { Plus } from "lucide-react";
+import { uiModal } from "../atoms/modalatom";
 
 const Navigation = () => {
+  const setModal = useSetAtom(uiModal);
+
+  const handleModal = () => {
+    setModal((prev) => ({ ...prev, modal: true }));
+  };
+
   return (
     <div className="w-full max-w-7xl m-6 border border-white rounded-2xl shadow-md bg-white flex p-5 flex-wrap justify-between gap-3 items-center ">
       <div className="flex flex-col gap-3">
@@ -8,7 +16,10 @@ const Navigation = () => {
         <span>Total Applications : 20</span>
       </div>
       <div className="flex justify-between items-center gap-3 ">
-        <button className="bg-blue-400 text-white font-semibold rounded-xl px-5 py-2 text-2xl cursor-pointer hover:-translate-y-1 transform duration-300 hover:shadow-2xl flex items-center gap-1">
+        <button
+          className="bg-blue-400 text-white font-semibold rounded-xl px-5 py-2 text-2xl cursor-pointer hover:-translate-y-1 transform duration-300 hover:shadow-2xl flex items-center gap-1"
+          onClick={handleModal}
+        >
           <Plus size={20} strokeWidth={5} className="mt-1" />
           Add Application
         </button>
