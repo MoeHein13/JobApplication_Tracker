@@ -6,6 +6,20 @@ const JobModal = () => {
   const closeModal = () => {
     setModal((prev) => ({ ...prev, modal: false }));
   };
+
+  const statusOption = ["Interview", "Applied", "Reject", "Offer"];
+
+  const statusRender = (
+    <select
+      id="status"
+      className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
+    >
+      {statusOption.map((status) => {
+        return <option key={status}> {status}</option>;
+      })}
+    </select>
+  );
+
   return (
     <div
       className="flex justify-center items-center z-10 inset-0 fixed "
@@ -45,6 +59,66 @@ const JobModal = () => {
               className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
             />
           </div>
+        </div>
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col justify-center gap-2 w-full m-3">
+            <label htmlFor="status">Status</label>
+            {statusRender}
+          </div>
+          <div className="flex flex-col justify-center gap-2 w-full m-3">
+            <label htmlFor="date">Date Applied</label>
+            <input
+              type="date"
+              placeholder="eg.Frontend Engineer"
+              id="date"
+              className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
+            />
+          </div>
+        </div>
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col justify-center gap-2 w-full m-3">
+            <label htmlFor="salary">Salary(Optional)</label>
+            <input
+              type="text"
+              placeholder="eg.Acme Corp"
+              id="salary"
+              className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
+            />
+          </div>
+          <div className="flex flex-col justify-center gap-2 w-full m-3">
+            <label htmlFor="location">Location(Optional)</label>
+            <input
+              type="text"
+              placeholder="eg.Frontend Engineer"
+              id="location"
+              className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
+            />
+          </div>
+        </div>
+        <div className="flex flex-col justify-center gap-2 w-full m-3">
+          <label htmlFor="joburl">Job URL(Optional)</label>
+          <input
+            type="text"
+            placeholder="https://"
+            id="joburl"
+            className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
+          />
+        </div>
+        <div className="flex flex-col justify-center gap-2 w-full m-3">
+          <label htmlFor="notes">Notes</label>
+          <textarea
+            placeholder="Interview Details,contact,etc"
+            id="notes"
+            className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
+          />
+        </div>
+        <div className="flex justify-end gap-4">
+          <button className="px-3 py-2 border border-gray-400 rounded-md cursor-pointer">
+            Cancel
+          </button>
+          <button className="px-3 py-2 border border-gray-400 rounded-md text-white bg-black cursor-pointer">
+            Add Application
+          </button>
         </div>
       </div>
       {/* <div className="rounded-xl p-5 border border-gray-400 max-w-72 ">
