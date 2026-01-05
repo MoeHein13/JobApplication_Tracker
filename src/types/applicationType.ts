@@ -16,3 +16,5 @@ export type ApplicationStatus =
   | "Offer"
   | "Rejected"
   | "Wishlist";
+
+export type ApplicationForm = Omit<Application, "id">;
