@@ -1,12 +1,24 @@
 import { useSetAtom } from "jotai";
 import { uiModal } from "../atoms/modalatom";
 import { X } from "lucide-react";
+import { useState } from "react";
+import { type ApplicationForm } from "../types/applicationType";
 const JobModal = () => {
   const setModal = useSetAtom(uiModal);
   const closeModal = () => {
     setModal((prev) => ({ ...prev, modal: false }));
   };
 
+  const [applicationForm, setApplicationForm] = useState<ApplicationForm>({
+    company: "",
+    position: "",
+    status: "Applied",
+    dataApplied: "",
+    salary: "",
+    location: "",
+    url: "",
+    notes: "",
+  });
   const statusOption = ["Interview", "Applied", "Reject", "Offer"];
 
   const statusRender = (
@@ -21,7 +33,7 @@ const JobModal = () => {
   );
 
   return (
-    <div
+    <form
       className="flex justify-center items-center z-10 inset-0 fixed "
       onClick={closeModal}
     >
@@ -48,6 +60,13 @@ const JobModal = () => {
               placeholder="eg.Acme Corp"
               id="company"
               className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
+              value={applicationForm.company}
+              onChange={(e) =>
+                setApplicationForm({
+                  ...applicationForm,
+                  company: e.target.value,
+                })
+              }
             />
           </div>
           <div className="flex flex-col justify-center gap-2 w-full m-3">
@@ -123,7 +142,7 @@ const JobModal = () => {
       </div>
       {/* <div className="rounded-xl p-5 border border-gray-400 max-w-72 ">
       </div> */}
-    </div>
+    </form>
   );
 };
 
