@@ -2,7 +2,11 @@ import { useSetAtom } from "jotai";
 import { uiModal } from "../atoms/modalatom";
 import { X } from "lucide-react";
 import { useState } from "react";
-import { type ApplicationForm } from "../types/applicationType";
+import {
+  type ApplicationForm,
+  type ApplicationStatus,
+} from "../types/applicationType";
+
 const JobModal = () => {
   const setModal = useSetAtom(uiModal);
   const closeModal = () => {
@@ -19,12 +23,19 @@ const JobModal = () => {
     url: "",
     notes: "",
   });
-  const statusOption = ["Interview", "Applied", "Reject", "Offer"];
+  const statusOption = ["Interview", "Applied", "Rejected", "Offer"];
 
   const statusRender = (
     <select
       id="status"
       className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
+      value={applicationForm.status}
+      onChange={(e) => {
+        setApplicationForm({
+          ...applicationForm,
+          status: e.target.value as ApplicationStatus,
+        });
+      }}
     >
       {statusOption.map((status) => {
         return <option key={status}> {status}</option>;
@@ -72,6 +83,13 @@ const JobModal = () => {
           <div className="flex flex-col justify-center gap-2 w-full m-3">
             <label htmlFor="position">Position</label>
             <input
+              value={applicationForm.position}
+              onChange={(e) => {
+                setApplicationForm({
+                  ...applicationForm,
+                  position: e.target.value,
+                });
+              }}
               type="text"
               placeholder="eg.Frontend Engineer"
               id="position"
@@ -87,6 +105,13 @@ const JobModal = () => {
           <div className="flex flex-col justify-center gap-2 w-full m-3">
             <label htmlFor="date">Date Applied</label>
             <input
+              value={applicationForm.dataApplied}
+              onChange={(e) => {
+                setApplicationForm({
+                  ...applicationForm,
+                  dataApplied: e.target.value,
+                });
+              }}
               type="date"
               placeholder="eg.Frontend Engineer"
               id="date"
@@ -98,6 +123,13 @@ const JobModal = () => {
           <div className="flex flex-col justify-center gap-2 w-full m-3">
             <label htmlFor="salary">Salary(Optional)</label>
             <input
+              value={applicationForm.salary}
+              onChange={(e) => {
+                setApplicationForm({
+                  ...applicationForm,
+                  salary: e.target.value,
+                });
+              }}
               type="text"
               placeholder="eg.Acme Corp"
               id="salary"
@@ -107,6 +139,13 @@ const JobModal = () => {
           <div className="flex flex-col justify-center gap-2 w-full m-3">
             <label htmlFor="location">Location(Optional)</label>
             <input
+              value={applicationForm.location}
+              onChange={(e) => {
+                setApplicationForm({
+                  ...applicationForm,
+                  location: e.target.value,
+                });
+              }}
               type="text"
               placeholder="eg.Frontend Engineer"
               id="location"
@@ -117,6 +156,13 @@ const JobModal = () => {
         <div className="flex flex-col justify-center gap-2 w-full m-3">
           <label htmlFor="joburl">Job URL(Optional)</label>
           <input
+            value={applicationForm.url}
+            onChange={(e) => {
+              setApplicationForm({
+                ...applicationForm,
+                url: e.target.value,
+              });
+            }}
             type="text"
             placeholder="https://"
             id="joburl"
@@ -126,6 +172,13 @@ const JobModal = () => {
         <div className="flex flex-col justify-center gap-2 w-full m-3">
           <label htmlFor="notes">Notes</label>
           <textarea
+            value={applicationForm.notes}
+            onChange={(e) => {
+              setApplicationForm({
+                ...applicationForm,
+                notes: e.target.value,
+              });
+            }}
             placeholder="Interview Details,contact,etc"
             id="notes"
             className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
