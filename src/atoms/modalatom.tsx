@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { type ApplicationForm } from "../types/applicationType";
+import { type Application } from "../types/applicationType";
 
 type uiModalType = {
   modal: null | boolean;
@@ -11,13 +11,4 @@ export const uiModal = atom<uiModalType>({
   toast: null,
 });
 
-export const jobApplications = atom<ApplicationForm>({
-  company: "",
-  position: "",
-  status: "Applied",
-  dataApplied: "",
-  salary: "",
-  location: "",
-  url: "",
-  notes: "",
-});
+export const jobApplications = atom<Application[]>([]);

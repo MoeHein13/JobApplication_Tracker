@@ -1,19 +1,21 @@
 import { useSetAtom } from "jotai";
-import { uiModal } from "../atoms/modalatom";
+import { jobApplications, uiModal } from "../atoms/modalatom";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import {
+  type Application,
   type ApplicationForm,
   type ApplicationStatus,
 } from "../types/applicationType";
 
 const JobModal = () => {
   const setModal = useSetAtom(uiModal);
+  const setJobApplications = useSetAtom(jobApplications);
   const closeModal = () => {
     setModal((prev) => ({ ...prev, modal: false }));
   };
 
-  const [applicationForm, setApplicationForm] = useState<ApplicationForm>({
+  const initialForm: ApplicationForm = {
     company: "",
     position: "",
     status: "Applied",
@@ -22,23 +24,53 @@ const JobModal = () => {
     location: "",
     url: "",
     notes: "",
-  });
-  const statusOption = ["Interview", "Applied", "Rejected", "Offer"];
+  };
+
+  const [applicationForm, setApplicationForm] =
+    useState<ApplicationForm>(initialForm);
+  const statusOption: ApplicationStatus[] = [
+    "Interview",
+    "Applied",
+    "Rejected",
+    "Offer",
+    "Wishlist",
+  ];
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setApplicationForm((prev) => ({
+      ...prev,
+      [name]: name === "status" ? (value as ApplicationStatus) : value,
+    }));
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const newApplication: Application = {
+      id: crypto.randomUUID(),
+      ...applicationForm,
+    };
+    setJobApplications((prev) => [newApplication, ...prev]);
+    setApplicationForm(initialForm);
+    closeModal();
+  };
 
   const statusRender = (
     <select
       id="status"
+      name="status"
       className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
       value={applicationForm.status}
-      onChange={(e) => {
-        setApplicationForm({
-          ...applicationForm,
-          status: e.target.value as ApplicationStatus,
-        });
-      }}
+      onChange={handleChange}
     >
       {statusOption.map((status) => {
-        return <option key={status}> {status}</option>;
+        return (
+          <option key={status} value={status}>
+            {status}
+          </option>
+        );
       })}
     </select>
   );
@@ -47,6 +79,7 @@ const JobModal = () => {
     <form
       className="flex justify-center items-center z-10 inset-0 fixed "
       onClick={closeModal}
+      onSubmit={handleSubmit}
     >
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       <div
@@ -70,29 +103,21 @@ const JobModal = () => {
               type="text"
               placeholder="eg.Acme Corp"
               id="company"
+              name="company"
               className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
               value={applicationForm.company}
-              onChange={(e) =>
-                setApplicationForm({
-                  ...applicationForm,
-                  company: e.target.value,
-                })
-              }
+              onChange={handleChange}
             />
           </div>
           <div className="flex flex-col justify-center gap-2 w-full m-3">
             <label htmlFor="position">Position</label>
             <input
               value={applicationForm.position}
-              onChange={(e) => {
-                setApplicationForm({
-                  ...applicationForm,
-                  position: e.target.value,
-                });
-              }}
+              onChange={handleChange}
               type="text"
               placeholder="eg.Frontend Engineer"
               id="position"
+              name="position"
               className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
             />
           </div>
@@ -106,15 +131,11 @@ const JobModal = () => {
             <label htmlFor="date">Date Applied</label>
             <input
               value={applicationForm.dataApplied}
-              onChange={(e) => {
-                setApplicationForm({
-                  ...applicationForm,
-                  dataApplied: e.target.value,
-                });
-              }}
+              onChange={handleChange}
               type="date"
               placeholder="eg.Frontend Engineer"
               id="date"
+              name="dataApplied"
               className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
             />
           </div>
@@ -124,15 +145,11 @@ const JobModal = () => {
             <label htmlFor="salary">Salary(Optional)</label>
             <input
               value={applicationForm.salary}
-              onChange={(e) => {
-                setApplicationForm({
-                  ...applicationForm,
-                  salary: e.target.value,
-                });
-              }}
+              onChange={handleChange}
               type="text"
               placeholder="eg.Acme Corp"
               id="salary"
+              name="salary"
               className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
             />
           </div>
@@ -140,15 +157,11 @@ const JobModal = () => {
             <label htmlFor="location">Location(Optional)</label>
             <input
               value={applicationForm.location}
-              onChange={(e) => {
-                setApplicationForm({
-                  ...applicationForm,
-                  location: e.target.value,
-                });
-              }}
+              onChange={handleChange}
               type="text"
               placeholder="eg.Frontend Engineer"
               id="location"
+              name="location"
               className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
             />
           </div>
@@ -157,15 +170,11 @@ const JobModal = () => {
           <label htmlFor="joburl">Job URL(Optional)</label>
           <input
             value={applicationForm.url}
-            onChange={(e) => {
-              setApplicationForm({
-                ...applicationForm,
-                url: e.target.value,
-              });
-            }}
+            onChange={handleChange}
             type="text"
             placeholder="https://"
             id="joburl"
+            name="url"
             className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
           />
         </div>
@@ -173,22 +182,25 @@ const JobModal = () => {
           <label htmlFor="notes">Notes</label>
           <textarea
             value={applicationForm.notes}
-            onChange={(e) => {
-              setApplicationForm({
-                ...applicationForm,
-                notes: e.target.value,
-              });
-            }}
+            onChange={handleChange}
             placeholder="Interview Details,contact,etc"
             id="notes"
+            name="notes"
             className="outline-1 border-gray-300 rounded-md p-2 text-gray-400"
           />
         </div>
         <div className="flex justify-end gap-4">
-          <button className="px-3 py-2 border border-gray-400 rounded-md cursor-pointer">
+          <button
+            type="button"
+            onClick={closeModal}
+            className="px-3 py-2 border border-gray-400 rounded-md cursor-pointer"
+          >
             Cancel
           </button>
-          <button className="px-3 py-2 border border-gray-400 rounded-md text-white bg-black cursor-pointer">
+          <button
+            type="submit"
+            className="px-3 py-2 border border-gray-400 rounded-md text-white bg-black cursor-pointer"
+          >
             Add Application
           </button>
         </div>
